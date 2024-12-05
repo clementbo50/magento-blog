@@ -2,7 +2,7 @@
 Découverte Magento2 (2.4.5)
 
 ## 1ère étape : Création d'un module & de notre première table
-
+Source : https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=1
 ### Étapes à suivre :
 
 1. **Créer le répertoire du module** :
@@ -68,7 +68,7 @@ Découverte Magento2 (2.4.5)
 
 
 ## 2eme étape : Création de notre modèle Post
-url youtube : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=2
+Source : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=2
 
 ## Modèle Post
 La classe `Post` représente un post de blog dans Magento. Elle gère la logique métier associée à un post, tout en étant liée à son modèle de ressource pour les opérations de base de données.
