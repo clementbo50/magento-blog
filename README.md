@@ -1,14 +1,71 @@
 # magento-blog
-Découverte Magento2 tuto : "https://www.youtube.com/watch?v=vkhijbeTZOg&amp;list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor"
+Découverte Magento2 (2.4.5)
 
+## 1ère étape : Création d'un module & de notre première table
 
-## 1ere étape : Création d'un module & de notre première table
-url youtube : "https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor"
-1. Créer le répertoire app/code/MageMastery/Blog 
-2. Créer le fichier registration.php
-3. Créer le fichier etc/module.xml
-4. Activé le module qu'on vient de créer php bin/magento module:enable MageMastery_Blog
-5. Mettre à jour la base de données php bin/magento setup:upgrade (Attention : ne pas oublier de lancer elasticsearch, et de bien renommer le fichier db_schema.xml)
+### Étapes à suivre :
+
+1. **Créer le répertoire du module** :
+   - Ouvrez votre terminal et exécutez la commande suivante pour créer le répertoire du module :
+     ```bash
+     mkdir -p app/code/MageMastery/Blog
+     ```
+
+2. **Créer le fichier `registration.php`** :
+   - Créez un fichier nommé `registration.php` dans le répertoire `app/code/MageMastery/Blog` avec le contenu suivant :
+     ```php
+     <?php 
+     declare(strict_types=1);
+     use Magento\Framework\Component\ComponentRegistrar;
+
+     ComponentRegistrar::register(
+         ComponentRegistrar::MODULE, // Type d'enregistrement, ici un module
+         'MageMastery_Blog', // Nom du module
+         __DIR__ // Chemin du répertoire du module
+     );
+     ```
+
+3. **Créer le fichier `etc/module.xml`** :
+   - Créez un fichier nommé `module.xml` dans le répertoire `app/code/MageMastery/Blog/etc` avec le contenu suivant :
+     ```xml
+     <?xml version="1.0"?>
+     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+         <module name="MageMastery_Blog" setup_version="1.0.0"/>
+     </config>
+     ```
+
+4. **Activer le module** :
+   - Exécutez la commande suivante pour activer le module que vous venez de créer :
+     ```bash
+     php bin/magento module:enable MageMastery_Blog
+     ```
+
+5. **Mettre à jour la base de données** :
+   - Exécutez la commande suivante pour mettre à jour la base de données et appliquer les modifications :
+     ```bash
+     php bin/magento setup:upgrade
+     ```
+   - **Remarque** : Assurez-vous que le service Elasticsearch est en cours d'exécution avant d'exécuter cette commande.
+
+6. **Créer le fichier `etc/db_schema.xml`** :
+   - Créez un fichier nommé `db_schema.xml` dans le répertoire `app/code/MageMastery/Blog/etc` pour définir la structure de la table de posts de blog. Voici un exemple de contenu :
+     ```xml
+     <?xml version="1.0" encoding="UTF-8"?>
+     <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+         <table name="magemastery_blog_post" resource="default" engine="innodb" comment="MageMastery Blog Post table">
+             <column xsi:type="smallint" name="post_id" unsigned="false" nullable="false" identity="true"/>
+             <column xsi:type="varchar" name="title" nullable="true" length="255" comment="titre du post"/>
+             <column xsi:type="text" name="meta_keywords" nullable="true" comment="mots clés du post"/>
+             <column xsi:type="text" name="meta_description" nullable="true" comment="description du post"/>
+             <column xsi:type="mediumtext" name="content" nullable="true" comment="contenu du post"/>
+             <constraint xsi:type="primary" referenceId="PRIMARY">
+                 <column name="post_id"/>
+             </constraint>
+         </table>
+     </schema>
+     ```
+
 
 ## 2eme étape : Création de notre modèle Post
 url youtube : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=2
@@ -35,7 +92,7 @@ La classe `Collection` gère les collections de modèles `Post`, permettant de r
 - **Héritage** : Hérite de `AbstractCollection`, ce qui permet de gérer des collections de modèles.
 - **Méthode `_construct()`** : Initialise la collection en liant la classe `Collection` au modèle `Post` et à sa ressource `PostResource`.
 
-## Conclusion
+## Conclusion étape 2 :
 Ce module permet de gérer les posts de blog dans Magento de manière structurée et efficace, en séparant la logique métier, la persistance des données et la gestion des collections.
 
 
