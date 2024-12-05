@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- Définition de la table pour les posts de blog -->
+    <table name="magemastery_blog_post" resource="default" engine="innodb" comment="MageMastery Blog Post table">
+        <!-- Identifiant unique pour chaque post, auto-incrémenté -->
+        <column xsi:type="smallint" name="post_id" unsigned="false" nullable="false" identity="true"/>
+        <!-- Titre du post, peut être nul et a une longueur maximale de 255 caractères -->
+        <column xsi:type="varchar" name="title" nullable="true" length="255" comment="titre du post"/>
+        <!-- Mots clés associés au post, peut être nul -->
+        <column xsi:type="text" name="meta_keywords" nullable="true" comment="mots clés du post"/>
+        <!-- Description du post, peut être nul -->
+        <column xsi:type="text" name="meta_description" nullable="true" comment="description du post"/>
+        <!-- Contenu principal du post, peut être nul -->
+        <column xsi:type="mediumtext" name="content" nullable="true" comment="contenu du post"/>
+        <!-- Date de création du post, ne peut pas être nul, valeur par défaut est l'heure actuelle -->
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="date de création du post"/>
+        <!-- Date de dernière modification du post, ne peut pas être nul, se met à jour automatiquement -->
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="date de modification du post"/>
+        <!-- Contenu pour les mises à jour de la mise en page, peut être nul -->
+        <column xsi:type="text" name="layout_update_xml" nullable="true" comment="contenu de mise à jour de la mise en page"/>
+        <!-- Titre de la page dans les métadonnées, peut être nul et a une longueur maximale de 255 caractères -->
+        <column xsi:type="varchar" name="meta_title" nullable="true" length="255" comment="titre de la page dans les métadonnées"/>
+        <!-- Définition de la contrainte de clé primaire pour la table -->
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="post_id"/>
+        </constraint>
+    </table>
+</schema>

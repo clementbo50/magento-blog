@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<!-- Déclaration du module -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <!-- Définition du module -->
+    <module name="MageMastery_Blog" setup_version="1.0.0"/>
+</config>
