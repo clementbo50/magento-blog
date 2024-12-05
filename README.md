@@ -2,7 +2,7 @@
 Découverte Magento2 tuto : "https://www.youtube.com/watch?v=vkhijbeTZOg&amp;list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor"
 
 
-## 1ere étape : Création d'un module
+## 1ere étape : Création d'un module & de notre première table
 url youtube : "https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor"
 1. Créer le répertoire app/code/MageMastery/Blog 
 2. Créer le fichier registration.php
