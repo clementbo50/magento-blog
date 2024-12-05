@@ -237,7 +237,7 @@ Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer,
 
 ### Remarques :
 - Assurez-vous que le module est activé et que la base de données est à jour avant d'exécuter ce code.
-- Vous pouvez exécuter ce fichier en accédant à l'URL correspondante dans votre navigateur ou en utilisant la ligne de commande.
+
 
 ## Conclusion étape 3 :
 Cette étape vous a montré comment gérer les opérations CRUD de manière simple et efficace en utilisant l'ObjectManager de Magento. Cela vous permet de manipuler vos entités de manière fluide et intégrée dans l'écosystème Magento.
