@@ -66,9 +66,79 @@ Source : https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpb
      </schema>
      ```
 
-
-## 2eme étape : Création de notre modèle Post
+## 2ème étape : Création du modèle et du modèle de ressource
 Source : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=2
+### Étapes à suivre :
+
+1. **Créer le fichier `Model/Post.php`** :
+   - Créez un fichier nommé `Post.php` dans le répertoire `app/code/MageMastery/Blog/Model` avec le contenu suivant :
+     ```php
+     <?php
+
+     declare(strict_types=1);
+
+     namespace MageMastery\Blog\Model;
+
+     use Magento\Framework\Model\AbstractModel;
+     use MageMastery\Blog\Model\ResourceModel\Post as PostResource;
+
+     class Post extends AbstractModel
+     {
+         // La méthode _construct est appelée lors de la création d'une instance de la classe Post
+         protected function _construct()
+         {
+             // Initialise le modèle en liant la classe Post à sa ressource correspondante (PostResource)
+             $this->_init(PostResource::class);
+         }
+     }
+     ```
+
+2. **Créer le fichier `Model/ResourceModel/Post.php`** :
+   - Créez un fichier nommé `Post.php` dans le répertoire `app/code/MageMastery/Blog/Model/ResourceModel` avec le contenu suivant :
+     ```php
+     <?php
+
+     declare(strict_types=1);
+
+     namespace MageMastery\Blog\Model\ResourceModel;
+
+     use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+     class Post extends AbstractDb 
+     {
+         private const TABLE_NAME = 'magemastery_blog_post';
+         private const PRIMARY_KEY = 'post_id';
+
+         protected function _construct()
+         {
+             $this->_init(self::TABLE_NAME, self::PRIMARY_KEY);
+         }
+     }
+     ```
+
+3. **Créer le fichier `Model/ResourceModel/Post/Collection.php`** :
+   - Créez un fichier nommé `Collection.php` dans le répertoire `app/code/MageMastery/Blog/Model/ResourceModel/Post` avec le contenu suivant :
+     ```php
+     <?php
+
+     declare(strict_types=1);
+
+     namespace MageMastery\Blog\Model\ResourceModel\Post;
+
+     use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+     use MageMastery\Blog\Model\Post;
+     use MageMastery\Blog\Model\ResourceModel\Post as PostResource;
+
+     class Collection extends AbstractCollection
+     {
+         // La méthode _construct est appelée lors de la création d'une instance de la collection
+         protected function _construct()
+         {
+             // Initialise la collection en liant le modèle Post à son modèle de ressource PostResource
+             $this->_init(Post::class, PostResource::class);
+         }
+     }
+     ```
 
 ## Modèle Post
 La classe `Post` représente un post de blog dans Magento. Elle gère la logique métier associée à un post, tout en étant liée à son modèle de ressource pour les opérations de base de données.
