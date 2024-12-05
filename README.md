@@ -39,15 +39,13 @@ Source : https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpb
      ```bash
      php bin/magento module:enable MageMastery_Blog
      ```
-
-5. **Mettre à jour la base de données** :
-   - Exécutez la commande suivante pour mettre à jour la base de données et appliquer les modifications :
+   - Exécutez la commande suivante pour installer le module sur le système :
      ```bash
      php bin/magento setup:upgrade
      ```
-   - **Remarque** : Assurez-vous que le service Elasticsearch est en cours d'exécution avant d'exécuter cette commande.
 
-6. **Créer le fichier `etc/db_schema.xml`** :
+
+5. **Créer le fichier `etc/db_schema.xml`** :
    - Créez un fichier nommé `db_schema.xml` dans le répertoire `app/code/MageMastery/Blog/etc` pour définir la structure de la table de posts de blog. Voici un exemple de contenu :
      ```xml
      <?xml version="1.0" encoding="UTF-8"?>
@@ -65,6 +63,13 @@ Source : https://www.youtube.com/watch?v=vkhijbeTZOg&list=PLwcl8DqLMv9e4j7NETVpb
          </table>
      </schema>
      ```
+
+6. **Mettre à jour la base de données** :
+   - Exécutez la commande suivante pour mettre à jour la base de données et appliquer les modifications :
+     ```bash
+     php bin/magento setup:upgrade
+     ```
+   - **Remarque** : Assurez-vous que le service Elasticsearch est en cours d'exécution avant d'exécuter cette commande.
 
 ## 2ème étape : Création du modèle et du modèle de ressource
 Source : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=2
