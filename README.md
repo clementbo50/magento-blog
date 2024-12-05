@@ -145,7 +145,7 @@ Source : https://www.youtube.com/watch?v=b9wadgeJ_rw&list=PLwcl8DqLMv9e4j7NETVpb
      }
      ```
 
-## Modèle Post
+## Explication du Modèle Post
 La classe `Post` représente un post de blog dans Magento. Elle gère la logique métier associée à un post, tout en étant liée à son modèle de ressource pour les opérations de base de données.
 
 ### Fonctionnalités :
@@ -169,5 +169,77 @@ La classe `Collection` gère les collections de modèles `Post`, permettant de r
 
 ## Conclusion étape 2 :
 Ce module permet de gérer les posts de blog dans Magento de manière structurée et efficace, en séparant la logique métier, la persistance des données et la gestion des collections.
+
+## 3ème étape : Gestion d'un CRUD simple avec ObjectManager
+
+Source : https://www.youtube.com/watch?v=8vPNq8tB6oc&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=4
+
+Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) pour nos entités de posts de blog en utilisant l'ObjectManager de Magento. Cela nous permettra d'interagir facilement avec notre modèle de données (attention c'est un exemple de CRUD simple habituellement on ne doit pas modifier le fichier `pub/index.php` comme cela !).
+
+### Étapes à suivre :
+
+1. **Utiliser le fichier `pub/index.php` pour le CRUD** :
+   - Dans le fichier `pub/index.php`, nous allons implémenter les opérations CRUD. Voici un exemple de code à ajouter :
+     ```php
+     <?php
+     // ... code d'initialisation de Magento ... 
+     // ne pas oublié de commenter $bootstrap->run($app);
+
+     $om = $bootstrap->getObjectManager(); // Récupère le gestionnaire d'objets
+
+     /** @var MageMastery\Blog\Model\ResourceModel\Post $postResource */
+     $postResource = $om->get(MageMastery\Blog\Model\ResourceModel\Post::class);
+
+     // --- Créer un nouveau post ---
+     $post = $om->create(MageMastery\Blog\Model\Post::class);
+     $post->setData([
+         'title' => 'Mon premier post',
+         'meta_keywords' => 'magento 2, blog, post',
+         'meta_description' => 'Description de mon premier post',
+         'content' => '<p>Contenu de mon premier post</p>'
+     ]);
+     $postResource->save($post);
+     echo "<h2>Post créé :</h2>";
+     echo "<pre style='background-color: #f0f0f0; padding: 10px;'>" . var_export($post->getData(), true) . "</pre>";
+
+     // --- Lire tous les posts ---
+     $collection = $om->get(MageMastery\Blog\Model\ResourceModel\Post\Collection::class);
+     echo "<h2>Liste des posts :</h2>";
+     foreach ($collection->getItems() as $post) {
+         echo "<pre style='background-color: #e0f7fa; padding: 10px;'>" . var_export($post->getData(), true) . "</pre>";
+     }
+
+     // --- Mettre à jour un post ---
+     $postToUpdate = $collection->getFirstItem();
+     $postToUpdate->setData('title', 'Mon post mis à jour');
+     $postResource->save($postToUpdate);
+     echo "<h2>Post mis à jour :</h2>";
+     echo "<pre style='background-color: #ffe0b2; padding: 10px;'>" . var_export($postToUpdate->getData(), true) . "</pre>";
+
+     // --- Supprimer un post ---
+     $postToDelete = $collection->getLastItem();
+     $postResource->delete($postToDelete);
+     echo "<h2>Post supprimé :</h2>";
+     echo "<pre style='background-color: #ffccbc; padding: 10px;'>" . var_export($postToDelete->getData(), true) . "</pre>";
+     ```
+
+### Explication du code :
+
+- **Initialisation de Magento** : Le fichier commence par initialiser l'environnement Magento en incluant le fichier `bootstrap.php`. Cela permet d'accéder à toutes les fonctionnalités de Magento.
+
+- **Création d'un nouveau post** : On crée une nouvelle instance du modèle `Post`, on définit ses données, puis on l'enregistre dans la base de données.
+
+- **Lecture des posts** : On récupère tous les posts de la collection et on les affiche. Chaque post est stylisé pour une meilleure lisibilité.
+
+- **Mise à jour d'un post** : On récupère le premier post de la collection, on modifie son titre, puis on l'enregistre à nouveau.
+
+- **Suppression d'un post** : On récupère le dernier post de la collection et on le supprime. Les données du post supprimé sont affichées.
+
+### Remarques :
+- Assurez-vous que le module est activé et que la base de données est à jour avant d'exécuter ce code.
+- Vous pouvez exécuter ce fichier en accédant à l'URL correspondante dans votre navigateur ou en utilisant la ligne de commande.
+
+## Conclusion étape 3 :
+Cette étape vous a montré comment gérer les opérations CRUD de manière simple et efficace en utilisant l'ObjectManager de Magento. Cela vous permet de manipuler vos entités de manière fluide et intégrée dans l'écosystème Magento.
 
 
