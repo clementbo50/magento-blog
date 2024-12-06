@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Déclaration de la configuration du menu pour le module MageMastery_Blog -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+     <!-- Ajout d'un élément de menu principal pour le blog -->
+        <add id="MageMastery_Blog::content_elements" 
+           title="Mage Mastery Blog" 
+           translate="title"
+           module="MageMastery_Blog"
+           sortOrder="10"
+           parent="Magento_Backend::content"
+           resource="Magento_Backend::admin"/>
+    <!-- Ajout d'un sous-élément de menu pour les posts de blog -->
+     <add id="MageMastery_Blog::posts"
+         title="Posts" translate="title"
+          module="MageMastery_Blog"
+           sortOrder="0"
+           parent="MageMastery_Blog::content_elements"
+           action="magemastery_blog/post"
+           resource="Magento_Backend::admin"/>
+    </menu>
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- Déclaration de la configuration des routes pour le module MageMastery_Blog -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin"> <!-- Définition d'un routeur pour l'administration -->
+        <route id="magemastery_blog" frontName="magemastery_blog"> <!-- Définition d'une route avec un identifiant unique -->
+            <module name="MageMastery_Blog" before="Magento_Backend" /> <!-- Association de la route au module MageMastery_Blog, avant le module Magento_Backend -->
+        </route>
+    </router>
+</config>

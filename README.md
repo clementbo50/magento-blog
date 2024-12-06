@@ -174,7 +174,7 @@ Ce module permet de gérer les posts de blog dans Magento de manière structuré
 
 Source : https://www.youtube.com/watch?v=8vPNq8tB6oc&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=4
 
-Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) pour nos entités de posts de blog en utilisant l'ObjectManager de Magento. Cela nous permettra d'interagir facilement avec notre modèle de données (attention c'est un exemple de CRUD simple habituellement on ne doit pas modifier le fichier `pub/index.php` comme cela !).
+Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer, Lire, Mettre �� jour, Supprimer) pour nos entités de posts de blog en utilisant l'ObjectManager de Magento. Cela nous permettra d'interagir facilement avec notre modèle de données (attention c'est un exemple de CRUD simple habituellement on ne doit pas modifier le fichier `pub/index.php` comme cela !).
 
 ### Étapes à suivre :
 
@@ -241,5 +241,115 @@ Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer,
 
 ## Conclusion étape 3 :
 Cette étape vous a montré comment gérer les opérations CRUD de manière simple et efficace en utilisant l'ObjectManager de Magento. Cela vous permet de manipuler vos entités de manière fluide et intégrée dans l'écosystème Magento.
+
+## 4ème étape : Création d'une page d'administration
+
+Source : https://www.youtube.com/watch?v=FT_z5Vc9ZxE&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=5
+
+Dans cette étape, nous allons créer une interface d'administration pour gérer les posts du blog. Cela implique la création de plusieurs fichiers pour configurer les routes, le menu et le contrôleur.
+
+### Étapes à suivre :
+
+1. **Créer le fichier `etc/adminhtml/routes.xml`** :
+   - Ce fichier définit les routes pour l'administration :
+     ```xml
+     <?xml version="1.0"?>
+     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+         <router id="admin">
+             <route id="magemastery_blog" frontName="magemastery_blog">
+                 <module name="MageMastery_Blog" before="Magento_Backend" />
+             </route>
+         </router>
+     </config>
+     ```
+
+2. **Créer le fichier `etc/adminhtml/menu.xml`** :
+   - Ce fichier configure le menu dans l'interface d'administration :
+     ```xml
+     <?xml version="1.0"?>
+     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+         <menu>
+             <add id="MageMastery_Blog::content_elements" 
+                  title="Mage Mastery Blog" 
+                  translate="title"
+                  module="MageMastery_Blog"
+                  sortOrder="10"
+                  parent="Magento_Backend::content"
+                  resource="Magento_Backend::admin"/>
+             
+             <add id="MageMastery_Blog::posts"
+                  title="Posts" 
+                  translate="title"
+                  module="MageMastery_Blog"
+                  sortOrder="0"
+                  parent="MageMastery_Blog::content_elements"
+                  action="magemastery_blog/post"
+                  resource="Magento_Backend::admin"/>
+         </menu>
+     </config>
+     ```
+
+3. **Créer le contrôleur `Controller/Adminhtml/Post/Index.php`** :
+   - Ce fichier gère l'affichage de la page d'administration des posts :
+     ```php
+     <?php
+     declare(strict_types=1);
+
+     namespace MageMastery\Blog\Controller\Adminhtml\Post;
+
+     use Magento\Backend\App\Action;
+     use Magento\Framework\App\Action\HttpGetActionInterface;
+     use Magento\Framework\Controller\ResultFactory;
+     use Magento\Backend\Model\View\Result\Page;
+
+     class Index extends Action implements HttpGetActionInterface
+     {
+         public function execute(): Page
+         {
+             /** @var Page $resultPage */
+             $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+             $resultPage->setActiveMenu('MageMastery_Blog::posts');
+             $resultPage->getConfig()->getTitle()->prepend(__('Poste du blog'));
+             return $resultPage;
+         }
+     }
+     ```
+
+### Explication des fichiers :
+
+#### Routes (routes.xml)
+- Définit la route `magemastery_blog` pour l'administration
+- Le `frontName` sera utilisé dans l'URL de l'admin
+- Le module est chargé avant `Magento_Backend` pour assurer la compatibilité
+
+#### Menu (menu.xml)
+- Crée deux entrées dans le menu admin :
+  1. Un menu parent "Mage Mastery Blog" sous "Contenu"
+  2. Un sous-menu "Posts" qui pointe vers notre contrôleur
+- Définit les permissions et l'ordre d'affichage
+
+#### Contrôleur (Index.php)
+- Gère l'affichage de la page principale des posts
+- Utilise le système de pages admin de Magento
+- Configure le menu actif et le titre de la page
+- Retourne une page d'administration complète
+
+### Activation des modifications :
+
+Après avoir créé ces fichiers, exécutez la commande suivante :
+```bash
+php bin/magento cache:clean
+
+```
+
+### Accès à l'interface d'administration :
+- Connectez-vous à l'admin Magento
+- Dans le menu principal, sous "Contenu", vous trouverez "Mage Mastery Blog"
+- Cliquez sur "Posts" pour accéder à la gestion des posts
+
+## Conclusion étape 4 :
+cette étape nous a permis de créer une page d'administration pour notre module de blog.
 
 
