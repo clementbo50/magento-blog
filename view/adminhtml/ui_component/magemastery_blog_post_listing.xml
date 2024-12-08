@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array"> <!-- Argument pour les données -->
+        <item name="js_config" xsi:type="array"> <!-- Configuration JavaScript -->
+            <item name="provider" xsi:type="string">magemastery_blog_post_listing.magemastery_blog_post_listing_data_source</item> <!-- Fournisseur de données -->
+        </item>
+    </argument>
+    <settings> <!-- Paramètres de configuration du listing -->
+        <buttons> <!-- Section des boutons -->
+            <button name="add"> <!-- Bouton pour ajouter un nouveau post -->
+                <url path="*/*/new"/> <!-- URL pour ajouter un nouveau post -->
+                <class>primary</class> <!-- Classe CSS pour le bouton -->
+                <label translate="true">Ajouter un post</label> <!-- Étiquette du bouton -->
+            </button>
+        </buttons>
+        <spinner>magemastery_blog_post_columns</spinner> <!-- Indicateur de chargement -->
+        <deps> <!-- Dépendances -->
+            <dep>magemastery_blog_post_listing.magemastery_blog_post_listing_data_source</dep> <!-- Dépendance pour le chargement des données -->
+        </deps>
+    </settings>
+    <dataSource name="magemastery_blog_post_listing_data_source" component="Magento_Ui/js/grid/provider"> <!-- Source de données pour le listing -->
+        <settings> <!-- Paramètres de la source de données -->
+            <storageConfig> <!-- Configuration de stockage -->
+                <param name="indexField" xsi:type="string">post_id</param> <!-- Champ d'index pour le stockage -->
+            </storageConfig>
+            <updateUrl path="mui/index/render"/> <!-- URL pour mettre à jour les données -->
+        </settings>
+        <aclResource>Magento_Backend::admin</aclResource> <!-- Ressource ACL pour les permissions -->
+        <dataProvider class="Magento\Cms\Ui\Component\DataProvider" name="magemastery_blog_post_listing_data_source"> <!-- Fournisseur de données -->
+            <settings> <!-- Paramètres du fournisseur de données -->
+                <requestFieldName>id</requestFieldName> <!-- Nom du champ de requête -->
+                <primaryFieldName>post_id</primaryFieldName> <!-- Champ principal pour l'identification -->
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top"> <!-- Barre d'outils pour le listing -->
+        <settings> <!-- Paramètres de la barre d'outils -->
+            <sticky>true</sticky> <!-- Barre d'outils collante -->
+        </settings>
+        <bookmark name="bookmarks"/> <!-- Marque-page pour les favoris -->
+        <columnsControls name="columns_controls"/> <!-- Contrôles pour les colonnes -->
+        <filterSearch name="fulltext"/> <!-- Recherche textuelle complète -->
+        <filters name="listing_filters"> <!-- Filtres pour le listing -->
+            <argument name="data" xsi:type="array"> <!-- Argument pour les données des filtres -->
+                <item name="observers" xsi:type="array"> <!-- Observateurs pour les filtres -->
+                    <item name="column" xsi:type="string">column</item> <!-- Observateur pour les colonnes -->
+                </item>
+            </argument>
+            <settings> <!-- Paramètres des filtres -->
+                <templates> <!-- Modèles pour les filtres -->
+                    <filters> <!-- Section des filtres -->
+                        <select> <!-- Sélecteur pour les filtres -->
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param> <!-- Modèle pour le filtre -->
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param> <!-- Composant pour le filtre -->
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+        </filters>
+        <massaction name="listing_massaction"> <!-- Action de masse pour le listing -->
+            <action name="delete"> <!-- Action de suppression -->
+                <settings> <!-- Paramètres de l'action de suppression -->
+                    <confirm> <!-- Confirmation pour la suppression -->
+                        <message translate="true">Are you sure you want to delete selected items?</message> <!-- Message de confirmation -->
+                        <title translate="true">Delete items</title> <!-- Titre de la fenêtre de confirmation -->
+                    </confirm>
+                    <url path="cms/page/massDelete"/> <!-- URL pour la suppression en masse -->
+                    <type>delete</type> <!-- Type d'action -->
+                    <label translate="true">Delete</label> <!-- Étiquette de l'action -->
+                </settings>
+            </action>
+            <action name="edit"> <!-- Action d'édition -->
+                <settings> <!-- Paramètres de l'action d'édition -->
+                    <callback> <!-- Callback pour l'édition -->
+                        <target>editSelected</target> <!-- Cible pour l'édition des éléments sélectionnés -->
+                        <provider>magemastery_blog_post_listing.magemastery_blog_post_listing.magemastery_blog_post_columns_editor</provider> <!-- Fournisseur pour l'éditeur -->
+                    </callback>
+                    <type>edit</type> <!-- Type d'action -->
+                    <label translate="true">Modifier</label> <!-- Étiquette de l'action -->
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/> <!-- Pagination pour la liste -->
+    </listingToolbar>
+    <columns name="magemastery_blog_post_columns"> <!-- Colonnes pour le listing -->
+        <settings> <!-- Paramètres des colonnes -->
+            <editorConfig> <!-- Configuration de l'éditeur -->
+                <param name="clientConfig" xsi:type="array"> <!-- Configuration client -->
+                    <item name="saveUrl" xsi:type="url" path="cms/page/inlineEdit"/> <!-- URL pour enregistrer les modifications en ligne -->
+                    <item name="validateBeforeSave" xsi:type="boolean">false</item> <!-- Validation avant l'enregistrement -->
+                </param>
+                <param name="indexField" xsi:type="string">post_id</param> <!-- Champ d'index pour les colonnes -->
+                <param name="enabled" xsi:type="boolean">true</param> <!-- État d'activation de l'éditeur -->
+                <param name="selectProvider" xsi:type="string">magemastery_blog_post_listing.magemastery_blog_post_listing.magemastery_blog_post_columns.ids</param> <!-- Fournisseur pour la sélection -->
+            </editorConfig>
+            <childDefaults> <!-- Valeurs par défaut pour les enfants -->
+                <param name="fieldAction" xsi:type="array"> <!-- Action pour le champ -->
+                    <item name="provider" xsi:type="string">magemastery_blog_post_listing.magemastery_blog_post_listing.magemastery_blog_post_columns_editor</item> <!-- Fournisseur pour l'éditeur des colonnes -->
+                    <item name="target" xsi:type="string">startEdit</item> <!-- Cible pour commencer l'édition -->
+                    <item name="params" xsi:type="array"> <!-- Paramètres pour l'édition -->
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item> <!-- Index de la ligne à éditer -->
+                        <item name="1" xsi:type="boolean">true</item> <!-- Paramètre pour l'édition -->
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids"> <!-- Colonne de sélection -->
+            <settings> <!-- Paramètres de la colonne de sélection -->
+                <indexField>post_id</indexField> <!-- Champ d'index pour la sélection -->
+                <resizeEnabled>false</resizeEnabled> <!-- Redimensionnement désactivé -->
+                <resizeDefaultWidth>55</resizeDefaultWidth> <!-- Largeur par défaut pour le redimensionnement -->
+            </settings>
+        </selectionsColumn>
+        <column name="post_id"> <!-- Colonne pour l'ID du post -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>textRange</filter> <!-- Filtre pour la plage de texte -->
+                <label translate="true">ID</label> <!-- Étiquette pour la colonne ID -->
+                <sorting>asc</sorting> <!-- Tri ascendant -->
+            </settings>
+        </column>
+        <column name="title"> <!-- Colonne pour le titre -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>text</filter> <!-- Filtre pour le texte -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <validation> <!-- Validation pour l'éditeur -->
+                        <rule name="required-entry" xsi:type="boolean">true</rule> <!-- Règle de validation pour l'entrée requise -->
+                    </validation>
+                    <editorType>text</editorType> <!-- Type d'éditeur pour le texte -->
+                </editor>
+                <label translate="true">Title</label> <!-- Étiquette pour le titre -->
+            </settings>
+        </column>
+        <column name="identifier"> <!-- Colonne pour l'identifiant -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>text</filter> <!-- Filtre pour le texte -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <validation> <!-- Validation pour l'éditeur -->
+                        <rule name="validate-identifier" xsi:type="boolean">true</rule> <!-- Règle de validation pour l'identifiant -->
+                    </validation>
+                    <editorType>text</editorType> <!-- Type d'éditeur pour le texte -->
+                </editor>
+                <label translate="true">URL Key</label> <!-- Étiquette pour la clé URL -->
+            </settings>
+        </column>
+        <column name="page_layout" component="Magento_Ui/js/grid/columns/select"> <!-- Colonne pour la mise en page -->
+            <settings> <!-- Paramètres de la colonne -->
+                <options class="Magento\Cms\Model\Page\Source\PageLayout"/> <!-- Options pour la mise en page -->
+                <filter>select</filter> <!-- Filtre pour la sélection -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>select</editorType> <!-- Type d'éditeur pour la sélection -->
+                </editor>
+                <dataType>select</dataType> <!-- Type de données pour la sélection -->
+                <label translate="true">Layout</label> <!-- Étiquette pour la mise en page -->
+            </settings>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store"> <!-- Colonne pour l'ID du magasin -->
+            <settings> <!-- Paramètres de la colonne -->
+                <label translate="true">Store View</label> <!-- Étiquette pour la vue de magasin -->
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl> <!-- Modèle de corps pour la cellule -->
+                <sortable>false</sortable> <!-- Tri désactivé -->
+            </settings>
+        </column>
+        <column name="is_active" component="Magento_Ui/js/grid/columns/select"> <!-- Colonne pour l'état actif -->
+            <settings> <!-- Paramètres de la colonne -->
+                <options class="Magento\Cms\Model\Page\Source\IsActive"/> <!-- Options pour l'état actif -->
+                <filter>select</filter> <!-- Filtre pour la sélection -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>select</editorType> <!-- Type d'éditeur pour la sélection -->
+                </editor>
+                <dataType>select</dataType> <!-- Type de données pour la sélection -->
+                <label translate="true">Status</label> <!-- Étiquette pour le statut -->
+            </settings>
+        </column>
+        <column name="creation_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date"> <!-- Colonne pour la date de création -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>dateRange</filter> <!-- Filtre pour la plage de dates -->
+                <dataType>date</dataType> <!-- Type de données pour la date -->
+                <label translate="true">Created</label> <!-- Étiquette pour la date de création -->
+            </settings>
+        </column>
+        <column name="update_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date"> <!-- Colonne pour la date de mise à jour -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>dateRange</filter> <!-- Filtre pour la plage de dates -->
+                <dataType>date</dataType> <!-- Type de données pour la date -->
+                <label translate="true">Modified</label> <!-- Étiquette pour la date de modification -->
+            </settings>
+        </column>
+        <column name="custom_theme_from" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date"> <!-- Colonne pour la date de début du thème personnalisé -->
+            <settings> <!-- Paramètres de la colonne -->
+                <timezone>false</timezone> <!-- Fuseau horaire désactivé -->
+                <dateFormat>MMM d, y</dateFormat> <!-- Format de date -->
+                <filter>dateRange</filter> <!-- Filtre pour la plage de dates -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>date</editorType> <!-- Type d'éditeur pour la date -->
+                </editor>
+                <dataType>date</dataType> <!-- Type de données pour la date -->
+                <label translate="true">Custom design from</label> <!-- Étiquette pour la date de début de design personnalisé -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="custom_theme_to" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date"> <!-- Colonne pour la date de fin du thème personnalisé -->
+            <settings> <!-- Paramètres de la colonne -->
+                <timezone>false</timezone> <!-- Fuseau horaire désactivé -->
+                <dateFormat>MMM d, y</dateFormat> <!-- Format de date -->
+                <filter>dateRange</filter> <!-- Filtre pour la plage de dates -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>date</editorType> <!-- Type d'éditeur pour la date -->
+                </editor>
+                <dataType>date</dataType> <!-- Type de données pour la date -->
+                <label translate="true">Custom design to</label> <!-- Étiquette pour la date de fin de design personnalisé -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="custom_theme" component="Magento_Ui/js/grid/columns/select"> <!-- Colonne pour le thème personnalisé -->
+            <settings> <!-- Paramètres de la colonne -->
+                <options class="Magento\Cms\Model\Page\Source\Theme"/> <!-- Options pour le thème personnalisé -->
+                <filter>select</filter> <!-- Filtre pour la sélection -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>select</editorType> <!-- Type d'éditeur pour la sélection -->
+                </editor>
+                <dataType>select</dataType> <!-- Type de données pour la sélection -->
+                <label translate="true">Custom Theme</label> <!-- Étiquette pour le thème personnalisé -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="custom_root_template" component="Magento_Ui/js/grid/columns/select"> <!-- Colonne pour le modèle de racine personnalisé -->
+            <settings> <!-- Paramètres de la colonne -->
+                <options class="Magento\Cms\Model\Page\Source\CustomLayout"/> <!-- Options pour le modèle de racine personnalisé -->
+                <filter>select</filter> <!-- Filtre pour la sélection -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>select</editorType> <!-- Type d'éditeur pour la sélection -->
+                </editor>
+                <dataType>select</dataType> <!-- Type de données pour la sélection -->
+                <label translate="true">Custom Layout</label> <!-- Étiquette pour le modèle personnalisé -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="meta_title"> <!-- Colonne pour le titre méta -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>text</filter> <!-- Filtre pour le texte -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>text</editorType> <!-- Type d'éditeur pour le texte -->
+                </editor>
+                <label translate="true">Meta Title</label> <!-- Étiquette pour le titre méta -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="meta_keywords"> <!-- Colonne pour les mots-clés méta -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>text</filter> <!-- Filtre pour le texte -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>text</editorType> <!-- Type d'éditeur pour le texte -->
+                </editor>
+                <label translate="true">Meta Keywords</label> <!-- Étiquette pour les mots-clés méta -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <column name="meta_description"> <!-- Colonne pour la description méta -->
+            <settings> <!-- Paramètres de la colonne -->
+                <filter>text</filter> <!-- Filtre pour le texte -->
+                <editor> <!-- Éditeur pour la colonne -->
+                    <editorType>text</editorType> <!-- Type d'éditeur pour le texte -->
+                </editor>
+                <label translate="true">Meta Description</label> <!-- Étiquette pour la description méta -->
+                <visible>false</visible> <!-- Colonne invisible par défaut -->
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Magento\Cms\Ui\Component\Listing\Column\PageActions"> <!-- Colonne pour les actions -->
+            <settings> <!-- Paramètres de la colonne d'actions -->
+                <indexField>post_id</indexField> <!-- Champ d'index pour les actions -->
+                <resizeEnabled>false</resizeEnabled> <!-- Redimensionnement désactivé -->
+                <resizeDefaultWidth>107</resizeDefaultWidth> <!-- Largeur par défaut pour le redimensionnement -->
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

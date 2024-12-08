@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+    Ce fichier définit la mise en page (layout) pour la grille d'administration des articles de blog.
+    Il est situé dans le dossier adminhtml car il concerne l'interface d'administration.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- 
+            Le container "content" est la zone principale de contenu dans l'admin Magento.
+            On y fait référence pour y placer nos éléments.
+        -->
+        <referenceContainer name="content">
+            <!-- 
+                Déclaration du composant UI qui affichera la liste des articles.
+                Ce composant est défini ailleurs dans un fichier XML de configuration UI.
+                Le nom "magemastery_blog_post_listing" est l'identifiant unique de notre grille.
+            -->
+            <uiComponent name="magemastery_blog_post_listing" />
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+    Ce fichier configure l'injection de dépendances (Dependency Injection) pour notre module Blog.
+    Il définit comment certaines classes doivent être instanciées et configurées.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- 
+        Configuration de la factory de collection pour les composants UI.
+        Cette configuration permet de lier notre source de données à la grille d'administration.
+    -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <!-- 
+                    Définit quelle classe de collection utiliser pour notre grille.
+                    La clé (magemastery_blog_post_listing_data_source) doit correspondre 
+                    à l'identifiant dans le fichier UI Component.
+                -->
+                <item name="magemastery_blog_post_listing_data_source" xsi:type="string">MageMastery\Blog\Model\ResourceModel\Post\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- 
+        Configuration de notre classe de collection pour la grille.
+        Cette section définit les paramètres de base pour notre collection.
+    -->
+    <type name="MageMastery\Blog\Model\ResourceModel\Post\Grid\Collection">
+        <arguments>
+            <!-- Nom de la table principale dans la base de données -->
+            <argument name="mainTable" xsi:type="string">magemastery_blog_post</argument>
+            <!-- Préfixe utilisé pour les événements liés à cette collection -->
+            <argument name="eventPrefix" xsi:type="string">magemastery_blog_post_grid_collection</argument>
+            <!-- Nom de l'objet utilisé dans les événements -->
+            <argument name="eventObject" xsi:type="string">magemastery_blog_post_collection</argument>
+            <!-- Classe du modèle de ressource associé -->
+            <argument name="resourceModel" xsi:type="string">MageMastery\Blog\Model\ResourceModel\Post</argument>
+        </arguments>
+    </type>
+</config>

@@ -174,7 +174,7 @@ Ce module permet de gérer les posts de blog dans Magento de manière structuré
 
 Source : https://www.youtube.com/watch?v=8vPNq8tB6oc&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=4
 
-Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer, Lire, Mettre �� jour, Supprimer) pour nos entités de posts de blog en utilisant l'ObjectManager de Magento. Cela nous permettra d'interagir facilement avec notre modèle de données (attention c'est un exemple de CRUD simple habituellement on ne doit pas modifier le fichier `pub/index.php` comme cela !).
+Dans cette étape, nous allons voir comment gérer les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) pour nos entités de posts de blog en utilisant l'ObjectManager de Magento. Cela nous permettra d'interagir facilement avec notre modèle de données (attention c'est un exemple de CRUD simple habituellement on ne doit pas modifier le fichier `pub/index.php` comme cela !).
 
 ### Étapes à suivre :
 
@@ -351,5 +351,105 @@ php bin/magento cache:clean
 
 ## Conclusion étape 4 :
 cette étape nous a permis de créer une page d'administration pour notre module de blog.
+
+## 5ème étape : Création de la grille d'administration
+
+Source : https://www.youtube.com/watch?v=4kvQqVKgcTc&list=PLwcl8DqLMv9e4j7NETVpbG2BtBkqsxeor&index=5
+
+Dans cette étape, nous allons créer une grille d'administration pour afficher et gérer les posts du blog de manière plus efficace. Cette grille utilisera le composant UI de Magento 2.
+
+### Fichiers créés/modifiés :
+
+1. **Layout XML (`view/adminhtml/layout/magemastery_blog_post_index.xml`)** :
+   ```xml
+   <?xml version="1.0"?>
+   <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+       <body>
+           <referenceContainer name="content">
+               <uiComponent name="magemastery_blog_post_listing" />
+           </referenceContainer>
+       </body>
+   </page>
+   ```
+   Ce fichier définit la structure de la page d'administration et intègre notre composant UI.
+
+
+2. **Créer le fichier `etc/adminhtml/magemastery_blog_post_listing.xml`** :
+   (voir le code dans le fichier `etc/adminhtml/magemastery_blog_post_listing.xml`)
+
+   ce fichier configure la grille d'administration pour notre module.
+
+3. **Configuration de l'injection de dépendances (`etc/di.xml`)** :
+   ```xml
+   <?xml version="1.0"?>
+   <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+       <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+           <arguments>
+               <argument name="collections" xsi:type="array">
+                   <item name="magemastery_blog_post_listing_data_source" xsi:type="string">MageMastery\Blog\Model\ResourceModel\Post\Grid\Collection</item>
+               </argument>
+           </arguments>
+       </type>
+       <type name="MageMastery\Blog\Model\ResourceModel\Post\Grid\Collection">
+           <arguments>
+               <argument name="mainTable" xsi:type="string">magemastery_blog_post</argument>
+               <argument name="eventPrefix" xsi:type="string">magemastery_blog_post_grid_collection</argument>
+               <argument name="eventObject" xsi:type="string">magemastery_blog_post_collection</argument>
+               <argument name="resourceModel" xsi:type="string">MageMastery\Blog\Model\ResourceModel\Post</argument>
+           </arguments>
+       </type>
+   </config>
+   ```
+   Ce fichier configure la source de données pour notre grille.
+
+3. **Collection pour la grille (`Model/ResourceModel/Post/Grid/Collection.php`)** :
+   Cette classe étend la collection de base des posts et implémente les interfaces nécessaires pour le composant UI :
+   - Gestion des agrégations
+   - Conversion des dates
+   - Implémentation de SearchResultInterface
+   - Configuration des filtres et du tri
+
+(voir le code dans le fichier `Model/ResourceModel/Post/Grid/Collection.php`)
+
+
+
+### Fonctionnalités de la grille :
+
+- **Affichage des données** : Liste tous les posts du blog avec leurs informations
+- **Filtrage** : Permet de filtrer les posts selon différents critères
+- **Tri** : Possibilité de trier les colonnes
+- **Pagination** : Navigation entre les pages de résultats
+- **Actions en masse** : Permet d'effectuer des actions sur plusieurs posts à la fois
+- **Recherche** : Recherche textuelle dans les posts
+- **Colonnes personnalisables** : L'utilisateur peut choisir quelles colonnes afficher
+
+### Configuration de la grille :
+
+Le fichier `magemastery_blog_post_listing.xml` définit :
+- La structure des colonnes
+- Les filtres disponibles
+- Les actions possibles
+- La configuration de la pagination
+- Les options de tri
+- Les actions en masse
+- La barre d'outils (toolbar)
+
+### Remarques importantes :
+
+1. La grille utilise le système de composants UI de Magento 2
+2. Les données sont chargées de manière asynchrone via AJAX
+3. La configuration est extensible et personnalisable
+4. Les performances sont optimisées grâce au chargement à la demande
+
+### Activation des modifications :
+
+Après avoir ajouté ces fichiers, exécutez :
+```bash
+php bin/magento cache:clean
+```
+
+La grille d'administration est maintenant accessible via le menu Admin > Contenu > Mage Mastery Blog > Posts.
 
 
